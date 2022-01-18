@@ -15,6 +15,37 @@
         min-height: 100vh;
         background: #232836;
       }
+      button {
+        background: #07a659;
+        color: white;
+        border: 0;
+        outline: 0;
+        padding: 10px 20px;
+        border-radius: 4px;
+      }
+      button:hover, button:focus, button:active {
+        opacity: 0.9;
+        cursor: pointer;
+      }
+      button:disabled {
+        background: #568770;
+      }
+      button:disabled:hover {
+        opacity: 1;
+        cursor: default;
+      }
+      input {
+        background: white;
+        color: black;
+        border: 0;
+        outline: 0;
+        padding: 10px 20px;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      button.create-new-button {
+        background: #404963;
+      }
       .app {
         font-family: sans-serif;
         padding: 50px;
@@ -23,11 +54,9 @@
       .app a {
         color: #ffffff;
       }
-      .main {
-        margin: 10px 0;
-      }
       h1 {
         font-weight: normal;
+        margin-top: 0;
       }
       .word {
         display: flex;
@@ -56,6 +85,10 @@
       .footer {
         margin: 50px 0;
       }
+      #bricks {
+        white-space: pre;
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -82,19 +115,17 @@ function App() {
       {pageMarkup}
     </div>
     <div className="footer">
-      <button onClick={() => {
+      {appMode !== 'CREATE' ? <button className="create-new-button" onClick={() => {
         setAppMode('CREATE');
-      }}>Create New Game</button>
+      }}>Create New Game</button> : null}
     </div>
   </div>;
 }
 
 function GuessMode() {
   const searchParams = window.location.search;
-  console.log('hello guess mode', searchParams);
   let answer = '';
   if (searchParams && (searchParams.split('=').length === 2)) {
-    console.log('I will decrypt, ', searchParams.split('=')[1].toUpperCase());
     answer = decrypt(searchParams.split('=')[1].toUpperCase());
   }
   const [wordList, setWordList] = React.useState([]);
@@ -105,15 +136,61 @@ function GuessMode() {
     setWordList(newWordList);
   };
 
-  console.log('answer is', answer);
   return <div>
-    <h1>Guess a 5-letter word</h1>
+    <h1>Guess a {answer.length}-letter word</h1>
     {wordList.map((word, index) => <Word answer={answer} guess={word} key={index} />)}
-    <GuessInput addGuess={addGuess} />
+    {wordList[wordList.length - 1] === answer ? (
+      <Share wordList={wordList} answer={answer} />
+    ) : (
+      <GuessInput addGuess={addGuess} guessLength={answer.length} />
+    )}
   </div>;
 }
 
-function GuessInput({addGuess}) {
+function Share({wordList, answer}) {
+  const [copied, setCopied] = React.useState(false);
+  const shareText = wordList.map((word, index) => <ShareWord answer={answer} guess={word} key={index} />);
+  return <div>
+    <p>
+      <button onClick={() => {
+        navigator.clipboard.writeText(document.getElementById('bricks').textContent);
+        setCopied(true);
+      }}>
+        Share
+      </button>
+    </p>
+    {copied ? <p>Copied to clipboard.</p> : null}
+    <div id="bricks">
+      {shareText}
+      {window.location.href}
+    </div>
+  </div>;
+}
+
+function ShareWord({answer, guess}) {
+  const guessArray = guess.split('');
+  return <>
+    {guessArray.map((letter, index) => {
+      const letterClass = checkLetter({answer, letter, index});
+      let icon;
+      switch (letterClass) {
+        case 'nope':
+          icon = <>&#11035;</>;
+          break;
+        case 'yep':
+          icon = <>&#129001;</>;
+          break;
+        default:
+          icon = <>&#129000;</>;
+          break;
+      }
+      return <React.Fragment key={index}>{icon}</React.Fragment>;
+    })}
+    <>{"\n"}</>
+  </>;
+}
+
+function GuessInput({addGuess, guessLength}) {
   const [currentInput, setCurrentInput] = React.useState('');
   return <div className="guess-input">
     <input type="text"
@@ -122,24 +199,34 @@ function GuessInput({addGuess}) {
         setCurrentInput(e.target.value.toUpperCase());
       }}
     />
-    <button onClick={() => {
-      addGuess(currentInput);
-      setCurrentInput('');
-    }}>Guess</button>
+    <button
+      disabled={currentInput.length !== guessLength}
+      onClick={() => {
+        addGuess(currentInput);
+        setCurrentInput('');
+      }}
+    >
+      Guess
+    </button>
   </div>;
 }
 
-function Word({answer, guess}) {
+function checkLetter({answer, letter, index}) {
   const answerArray = answer.split('');
+  let status = 'maybe';
+  if (answerArray.indexOf(letter) === -1) {
+    status = 'nope';
+  } else if (answerArray[index] === letter) {
+    status = 'yep';
+  }
+  return status;
+}
+
+function Word({answer, guess}) {
   const guessArray = guess.split('');
   return <div className="word">
   {guessArray.map((letter, index) => {
-    let letterClass;
-    if (answerArray.indexOf(letter) === -1) {
-      letterClass = 'nope';
-    } else if (answerArray[index] === letter) {
-      letterClass = 'yep';
-    }
+    const letterClass = checkLetter({answer, letter, index});
     return <span className={`letter ${letterClass}`} key={index}>{letter}</span>;
   })}
   </div>;
@@ -149,7 +236,7 @@ function CreateMode() {
   const [url, createUrl] = React.useState('');
   const [currentInput, setCurrentInput] = React.useState('');
   return <div>
-    <h1>Enter a 5-letter word</h1>
+    <h1>Enter a word</h1>
     <input type="text"
       value={currentInput}
       onChange={(e) => {
@@ -157,7 +244,6 @@ function CreateMode() {
       }}
     />
     <button
-      disabled={currentInput.length !== 5}
       onClick={() => {
         createUrl(currentInput);
       }}
