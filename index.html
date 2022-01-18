@@ -95,7 +95,7 @@
     <div id="root"></div>
     <script type="text/babel">
 function App() {
-  const [appMode, setAppMode] = React.useState('GUESS');
+  const [appMode, setAppMode] = React.useState(window.location.search ? 'GUESS' : 'CREATE');
 
   let pageMarkup;
   switch (appMode) {
