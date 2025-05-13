@@ -3,6 +3,7 @@ layout: post
 title:  "Crabapple from the driveway"
 date:   2025-05-11 09:00:00 -0400
 categories: crabapple
+author: Holly
 ---
 There was an old crabapple growing like a weed at the very edge of the driveway. In past years, it has been repeatedly cut back, but it keeps growing back. It seems indestructible. I decided to dig it out to see if it would be interesting as a bonsai, instead of a weed.
 

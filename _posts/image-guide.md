@@ -3,6 +3,7 @@ layout: post
 title: "How to Include Images in Your Posts"
 date: 2023-11-14 12:00:00 -0500
 categories: tips
+author: Holly
 ---
 
 # Including Images in Your Jekyll Posts

@@ -10,6 +10,22 @@ This is the source for the Jekyll site at [holly.dev](https://holly.dev).
    ![Alt text](/assets/images/your-image-name.jpg)
    ```
 
+## Adding Authors to Posts
+
+Each post should have an author specified:
+
+```yaml
+---
+layout: post
+title: "Your Post Title"
+date: YYYY-MM-DD HH:MM:SS -0500
+categories: category-name
+author: Author Name
+---
+```
+
+The default author is "Holly" (configured in _config.yml).
+
 ## Local Development
 
 1. Install dependencies: `bundle install`
@@ -30,5 +46,6 @@ layout: post
 title: "Your Post Title"
 date: YYYY-MM-DD HH:MM:SS -0500
 categories: category-name
+author: Author Name
 ---
 ``` 

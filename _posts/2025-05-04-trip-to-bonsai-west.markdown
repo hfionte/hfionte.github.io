@@ -3,6 +3,7 @@ layout: post
 title:  "Trip to Bonsai West"
 date:   2025-05-04 09:00:00 -0400
 categories: juniper elm
+author: Holly
 ---
 We went to Bonsai West today and bought some small bonsai trees! We got 2 Chinese Elm, and 1 Juniper. One of the elms was already potted in a nice blue pot (Max's choice) but the other two trees were in plastic nursery pots. When we got home, we repotted them.
 
