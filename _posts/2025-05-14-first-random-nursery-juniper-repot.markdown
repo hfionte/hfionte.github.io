@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "First random nursery juniper repot"
+title:  "First Random Nursery Juniper Repot"
 date:   2025-05-14 15:00:00 -0400
 categories: juniper
 author: Dan
@@ -9,30 +9,30 @@ Today I repotted and pruned a juniper (procumbens nana) that I bought at Mahoney
 
 Here are some photos of tools used and soils and rocks used, although I did end up using a bit of Bonsai West’s bonsai mix in there as well. I didn’t realize we had any left, and they aren’t open til tomorrow and I wanted to get a jump on doing this as it is getting later into spring and the weather will be mild for the rest of the week.
 
-![seedlings in ground](/assets/images/2025-05-14-tools.jpg)
+![bonsai tools](/assets/images/2025-05-14-tools.jpg)
 
-![seedlings in ground](/assets/images/2025-05-14-soil-and-pots.jpg)
+![bags of soil and rocks(/assets/images/2025-05-14-soil-and-pots.jpg)
 
 This is a photo of the original material in the pot it came in. It’s very short and bushy.
 
-![seedlings in ground](/assets/images/2025-05-14-original-juniper-view.jpg)
+![a shrubby juniper in a pot on a stand](/assets/images/2025-05-14-original-juniper-view.jpg)
 
 Here it is out of the pot and then with some of the under-foliage trimmed so that I could see the trunk and main branches. 
 
-![seedlings in ground](/assets/images/2025-05-14-out-of-the-pot.jpg)
+![shrubby juniper in a hand](/assets/images/2025-05-14-out-of-the-pot.jpg)
 
-![seedlings in ground](/assets/images/2025-05-14-trimmed-roots-view-1.jpg)
+![juniper with trimmed roots](/assets/images/2025-05-14-trimmed-roots-view-1.jpg)
 
-![seedlings in ground](/assets/images/2025-05-14-trimmed-roots-underside-view.jpg)
+![underside of juniper](/assets/images/2025-05-14-trimmed-roots-underside-view.jpg)
 
-![seedlings in ground](/assets/images/2025-05-14-trimmed-roots-view-2.jpg)
+![juniper with trimmed roots alternate view](/assets/images/2025-05-14-trimmed-roots-view-2.jpg)
 
 And here it is from a few sides with the some of the crossing branches pruned, and some of the less-healthy looking branches and with a bit of the foliage thinned.
 
-![seedlings in ground](/assets/images/2025-05-14-repotted-view-1.jpg)
+![juniper repotted in black pot](/assets/images/2025-05-14-repotted-view-1.jpg)
 
-![seedlings in pots](/assets/images/2025-05-14-potted-view-2.jpg)
+![second view of repotted juniper](/assets/images/2025-05-14-potted-view-2.jpg)
 
-![japanese maple tree](/assets/images/2025-05-14-potted-view-3.jpg)
+![third view of repotted juniper](/assets/images/2025-05-14-potted-view-3.jpg)
 
 From here I might wire the cascades but mostly I’m just going to try to keep it alive. 
