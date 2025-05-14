@@ -11,7 +11,7 @@ Here are some photos of tools used and soils and rocks used, although I did end 
 
 ![bonsai tools](/assets/images/2025-05-14-tools.jpg)
 
-![bags of soil and rocks(/assets/images/2025-05-14-soil-and-pots.jpg)
+![bags of soil and rocks](/assets/images/2025-05-14-soil-and-pots.jpg)
 
 This is a photo of the original material in the pot it came in. It’s very short and bushy.
 
