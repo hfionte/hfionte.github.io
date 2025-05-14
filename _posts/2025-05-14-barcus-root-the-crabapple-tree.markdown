@@ -7,7 +7,7 @@ author: Holly
 ---
 I decided to name the gnarly crabapple stump "Barcus Root" after my favorite crabby little gnome from BG3.
 
-![Barcus Wroot from BG3](/assets/images/2025-05-14-barcus-bg3.jpg)
+![Barcus Wroot from BG3](/assets/images/2025-05-14-barcus-wroot-bg3.jpg)
 
 My Barcus is doing fine so far (doesn't seem like I killed it by digging it out). It's hanging out by the azalea that I'm also planning to eventually do some bonsai work on.
 
