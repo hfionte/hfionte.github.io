@@ -8,6 +8,6 @@ author: Holly
 
 Barcus seems to be doing okay, even after his leaves initially started crisping up a bit. Now he is backbudding, growing a bunch of by little sprouts from all over!
 
-![sprouts](/assets/images/2025-06-05-barcus.jpg)
+![sprouts](/assets/images/PXL_20250605_231006342.jpg)
 
 ![sprouts 2](/assets/images/2025-06-05-barcus2.jpg)
