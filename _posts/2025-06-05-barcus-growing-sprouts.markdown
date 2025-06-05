@@ -10,4 +10,4 @@ Barcus seems to be doing okay, even after his leaves initially started crisping 
 
 ![sprouts](/assets/images/PXL_20250605_231006342.jpg)
 
-![sprouts 2](/assets/images/2025-06-05-barcus2.jpg)
+![sprouts 2](/assets/images/)PXL_20250605_231014942.jpg)
