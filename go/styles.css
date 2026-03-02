@@ -144,22 +144,9 @@ main {
   align-items: center;
   justify-content: center;
   position: relative;
-  background-image:
-    linear-gradient(to right, #8b7355 1px, transparent 1px),
-    linear-gradient(to bottom, #8b7355 1px, transparent 1px);
-  background-size: var(--cell-size) var(--cell-size);
-  background-position: center center;
-  cursor: pointer;
-}
-
-.intersection:first-child {
-  background-position: calc(var(--cell-size) / 2) calc(var(--cell-size) / 2);
-}
-
-/* Grid lines - each cell gets right and bottom borders */
-.intersection {
   border-right: 1px solid #5a4a3a;
   border-bottom: 1px solid #5a4a3a;
+  cursor: pointer;
 }
 
 .intersection.last-col {
