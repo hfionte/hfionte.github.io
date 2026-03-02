@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Go</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <section id="setup" class="setup">
+      <h1>Go</h1>
+      <label for="board-size">Board size</label>
+      <select id="board-size">
+        <option value="9">9 × 9</option>
+        <option value="13">13 × 13</option>
+        <option value="19">19 × 19</option>
+      </select>
+      <button id="start-btn" type="button">Start game</button>
+    </section>
+
+    <section id="game" class="game hidden">
+      <div id="board-container"></div>
+      <button id="new-game-btn" class="new-game-btn hidden" type="button">
+        New game
+      </button>
+    </section>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
