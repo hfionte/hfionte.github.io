@@ -192,9 +192,30 @@ body {
   cursor: pointer;
 }
 
+/* Live validation states on just-placed tiles */
+.cell-tile.just-placed.play-valid {
+  background: #a8e6a3;
+  border-color: #3a9e42;
+}
+.cell-tile.just-placed.play-invalid {
+  background: #f4a0a0;
+  border-color: #c0392b;
+}
+
 /* Tiles from the previous play */
 .cell-tile.last-move {
   box-shadow: 0 0 0 1.5px #c08820 inset;
+}
+
+/* Brief flash animation on load for last-move tiles */
+@keyframes flashTile {
+  0%   { background: var(--tile-face); }
+  25%  { background: #ffe066; }
+  75%  { background: #ffe066; }
+  100% { background: var(--tile-face); }
+}
+.cell-tile.last-move-flash {
+  animation: flashTile 1.6s ease 0.3s both;
 }
 
 /* ===== Rack sections ===== */
@@ -286,13 +307,47 @@ body {
 }
 .tile.marked-for-exchange .tile-points { color: rgba(255,255,255,0.7); }
 
+/* ===== Point preview bar ===== */
+.point-preview {
+  margin: 4px 12px 0;
+  padding: 6px 10px;
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2e7d32;
+  text-align: center;
+}
+.point-preview.invalid {
+  background: #fdecea;
+  border-color: #ef9a9a;
+  color: #c0392b;
+}
+
+/* ===== Last move banner ===== */
+.last-move-banner {
+  margin: 6px 12px 0;
+  padding: 8px 12px;
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  color: #5d4037;
+  text-align: center;
+}
+.last-move-banner strong { font-weight: 700; }
+
 /* ===== Action buttons ===== */
 #actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
   padding: 10px 12px 20px;
 }
+/* End Turn and Copy URL span full width on first row */
+#btn-end-turn { grid-column: 1 / 2; }
+#btn-copy-url { grid-column: 2 / 4; }
 
 .btn {
   padding: 11px 8px;
@@ -323,6 +378,28 @@ body {
 }
 .btn-ghost:not(:disabled):active { background: #e8e2d8; }
 
+.btn-collab {
+  background: #1a7a5e;
+  color: #fff;
+  position: relative;
+}
+.btn-collab:not(:disabled):active { background: #145e48; }
+.btn-collab:disabled { opacity: 0.38; cursor: not-allowed; }
+/* Used badge */
+.btn-collab.used::after {
+  content: '✓ used';
+  position: absolute;
+  top: -7px;
+  right: 4px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  background: #888;
+  color: #fff;
+  border-radius: 4px;
+  padding: 1px 4px;
+  pointer-events: none;
+}
+
 .icon-btn {
   background: none;
   border: none;
@@ -331,6 +408,15 @@ body {
   padding: 2px;
   line-height: 1;
   -webkit-tap-highlight-color: transparent;
+}
+
+.collab-rack-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
 }
 
 /* ===== Modals ===== */
@@ -417,7 +503,9 @@ body {
 
   #board-container { padding: 10px 0; }
 
-  #actions { grid-template-columns: repeat(4, 1fr); }
+  #actions { grid-template-columns: repeat(5, 1fr); }
+  #btn-end-turn { grid-column: auto; }
+  #btn-copy-url { grid-column: auto; }
 
   .modal { align-items: center; }
   .modal-box { border-radius: 14px; }

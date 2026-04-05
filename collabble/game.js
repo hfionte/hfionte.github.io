@@ -88,6 +88,7 @@ function createInitialState() {
     score: 0,
     lastMove: null,     // { cells: [[r,c],...], words: [...], points: n }
     consecutivePasses: 0,
+    collabUsed: { P1: false, P2: false },
     gameOver: false,
   };
 }
@@ -133,14 +134,45 @@ let selectedRackIndex = null;
 // Tiles marked for exchange (rackIndex[]).
 let exchangeMarked = [];
 
+// Set to true on first render after loading a state from URL, to trigger flash animation.
+let flashLastMove = false;
+
+// Live validation state — recomputed after every placement change.
+// { valid: bool, allWordsKnown: bool, words: string[], points: number }
+let liveValidity = { valid: false, allWordsKnown: false, words: [], points: 0 };
+
+function updateLiveValidity() {
+  if (pendingPlacements.length === 0) {
+    liveValidity = { valid: false, allWordsKnown: false, words: [], points: 0 };
+    return;
+  }
+  const { valid } = validatePlacements();
+  if (!valid) {
+    liveValidity = { valid: false, allWordsKnown: false, words: [], points: 0 };
+    return;
+  }
+  const allWords = collectWords();
+  const allWordsKnown = typeof WORDS === 'undefined'
+    || allWords.every(w => WORDS.has(w.word.toLowerCase()));
+  liveValidity = {
+    valid: allWordsKnown,
+    allWordsKnown,
+    words: allWords.map(w => w.word),
+    points: allWordsKnown ? calculateScore() : 0,
+  };
+}
+
 // ============================================================
 // Rendering
 // ============================================================
 
 function render() {
+  updateLiveValidity();
   renderBoard();
   renderRacks();
   renderButtons();
+  renderPointPreview();
+  flashLastMove = false;
 }
 
 function renderBoard() {
@@ -162,7 +194,10 @@ function renderBoard() {
 
       if (pending) {
         // Tile placed this turn — highlight, click to recall
-        const tileEl = makeBoardTileEl(pending.letter, pending.isBlank, true, false);
+        const validityClass = pendingPlacements.length > 0
+          ? (liveValidity.valid ? 'play-valid' : 'play-invalid')
+          : '';
+        const tileEl = makeBoardTileEl(pending.letter, pending.isBlank, true, false, validityClass);
         tileEl.style.pointerEvents = 'auto';
         tileEl.style.cursor = 'pointer';
         tileEl.addEventListener('click', (e) => { e.stopPropagation(); recallTile(pending); });
@@ -171,10 +206,10 @@ function renderBoard() {
       } else if (boardLetter !== '.') {
         // Committed tile from a previous turn
         const isLastMove = state.lastMove?.cells?.some(([lr, lc]) => lr === r && lc === c);
-        // Lowercase letter = blank tile that was assigned a letter
         const isBlank = boardLetter === boardLetter.toLowerCase() && boardLetter !== '.';
         const letter = boardLetter.toUpperCase();
-        cell.appendChild(makeBoardTileEl(letter, isBlank, false, isLastMove));
+        const flashClass = (isLastMove && flashLastMove) ? 'last-move-flash' : '';
+        cell.appendChild(makeBoardTileEl(letter, isBlank, false, isLastMove, flashClass));
 
       } else {
         // Empty cell — show premium label, add drop target highlight when tile selected
@@ -195,11 +230,12 @@ function renderBoard() {
   }
 }
 
-function makeBoardTileEl(letter, isBlank, justPlaced, isLastMove) {
+function makeBoardTileEl(letter, isBlank, justPlaced, isLastMove, extraClass = '') {
   const el = document.createElement('div');
   el.className = 'cell-tile'
     + (justPlaced  ? ' just-placed' : '')
-    + (isLastMove  ? ' last-move'   : '');
+    + (isLastMove  ? ' last-move'   : '')
+    + (extraClass  ? ' ' + extraClass : '');
 
   const letterSpan = document.createElement('span');
   letterSpan.textContent = letter;
@@ -269,12 +305,34 @@ function renderButtons() {
   document.getElementById('btn-exchange').disabled  = state.gameOver;
   document.getElementById('btn-pass').disabled      = state.gameOver;
 
+  const collabUsed = state.collabUsed?.[state.turn] ?? false;
+  const btnCollab  = document.getElementById('btn-collab');
+  btnCollab.disabled = collabUsed || state.gameOver || hasPlaced;
+  btnCollab.classList.toggle('used', collabUsed);
+
   const turnDisplay = document.getElementById('turn-display');
   turnDisplay.textContent = state.gameOver
     ? 'Game over!'
     : (state.turn === 'P1' ? "Player 1's turn" : "Player 2's turn");
 
   document.getElementById('score-display').textContent = `Score: ${state.score}`;
+}
+
+function renderPointPreview() {
+  const el = document.getElementById('point-preview');
+  if (pendingPlacements.length === 0) {
+    el.classList.add('hidden');
+    return;
+  }
+  el.classList.remove('hidden');
+  if (liveValidity.valid) {
+    const wordList = liveValidity.words.join(', ');
+    el.textContent = `${wordList} — ${liveValidity.points} pts`;
+    el.classList.remove('invalid');
+  } else {
+    el.textContent = 'Not a valid play';
+    el.classList.add('invalid');
+  }
 }
 
 // ============================================================
@@ -554,7 +612,7 @@ document.getElementById('btn-end-turn').addEventListener('click', () => {
   }
 
   render();
-  showShareModal();
+  showShareModal({ lastMove: state.lastMove });
 });
 
 document.getElementById('btn-pass').addEventListener('click', () => {
@@ -662,15 +720,20 @@ document.getElementById('modal-exchange').addEventListener('click', (e) => {
 // Share URL modal
 // ============================================================
 
-function showShareModal({ title, hint } = {}) {
+function showShareModal({ title, hint, lastMove } = {}) {
   const encoded = encodeState(state);
   const url = location.origin + location.pathname + '#' + encoded;
   history.replaceState(null, '', '#' + encoded);
 
   document.getElementById('share-modal-title').textContent =
     title ?? 'Send to your partner';
-  document.getElementById('share-modal-hint').textContent =
-    hint  ?? 'Copy this link and send it to your partner to continue the game.';
+
+  let hintText = hint ?? 'Copy this link and send it to your partner to continue the game.';
+  if (lastMove && lastMove.words.length > 0) {
+    hintText = `You played ${lastMove.words.join(', ')} for ${lastMove.points} points! ` + hintText;
+  }
+  document.getElementById('share-modal-hint').textContent = hintText;
+
   document.getElementById('share-url-display').textContent = url;
   document.getElementById('btn-copy-share').textContent = 'Copy Link';
   document.getElementById('modal-share').classList.remove('hidden');
@@ -693,6 +756,122 @@ document.getElementById('btn-close-share').addEventListener('click', () => {
 
 document.getElementById('modal-share').addEventListener('click', (e) => {
   if (e.target === e.currentTarget) e.currentTarget.classList.add('hidden');
+});
+
+// ============================================================
+// Collab trade
+// ============================================================
+
+let collabYourIndex   = null;
+let collabPartnerIndex = null;
+
+document.getElementById('btn-collab').addEventListener('click', () => {
+  if (state.collabUsed[state.turn] || state.gameOver) return;
+
+  collabYourIndex    = null;
+  collabPartnerIndex = null;
+
+  const partner = state.turn === 'P1' ? 'P2' : 'P1';
+  const yourHand    = state.hands[state.turn];
+  const partnerHand = state.hands[partner];
+
+  function buildCollabRack(elId, hand, onSelect) {
+    const el = document.getElementById(elId);
+    el.innerHTML = '';
+    hand.forEach((letter, i) => {
+      const tile = document.createElement('div');
+      const isBlankTile = letter === 'BLANK';
+      tile.className = 'tile' + (isBlankTile ? ' is-blank' : '');
+      tile.dataset.index = i;
+
+      const letterSpan = document.createElement('span');
+      letterSpan.textContent = isBlankTile ? '' : letter;
+      tile.appendChild(letterSpan);
+
+      const pts = document.createElement('span');
+      pts.className = 'tile-points';
+      pts.textContent = isBlankTile ? '0' : (TILE_POINTS[letter] ?? '');
+      tile.appendChild(pts);
+
+      tile.addEventListener('click', () => onSelect(i, el));
+      el.appendChild(tile);
+    });
+  }
+
+  function highlightSelected(containerEl, selectedIndex) {
+    containerEl.querySelectorAll('.tile').forEach(t => {
+      t.classList.toggle('selected', parseInt(t.dataset.index) === selectedIndex);
+    });
+    updateCollabConfirm();
+  }
+
+  function updateCollabConfirm() {
+    document.getElementById('btn-confirm-collab').disabled =
+      collabYourIndex === null || collabPartnerIndex === null;
+  }
+
+  buildCollabRack('collab-your-rack', yourHand, (i, el) => {
+    collabYourIndex = i;
+    highlightSelected(el, i);
+  });
+
+  buildCollabRack('collab-partner-rack', partnerHand, (i, el) => {
+    collabPartnerIndex = i;
+    highlightSelected(el, i);
+  });
+
+  document.getElementById('btn-confirm-collab').disabled = true;
+  document.getElementById('modal-collab').classList.remove('hidden');
+});
+
+document.getElementById('btn-confirm-collab').addEventListener('click', () => {
+  if (collabYourIndex === null || collabPartnerIndex === null) return;
+
+  const partner   = state.turn === 'P1' ? 'P2' : 'P1';
+  const yourHand  = state.hands[state.turn];
+  const partHand  = state.hands[partner];
+
+  // Swap the tiles
+  const yourTile  = yourHand[collabYourIndex];
+  const partTile  = partHand[collabPartnerIndex];
+  yourHand[collabYourIndex]    = partTile;
+  partHand[collabPartnerIndex] = yourTile;
+
+  if (!state.collabUsed) state.collabUsed = { P1: false, P2: false };
+  state.collabUsed[state.turn] = true;
+
+  collabYourIndex    = null;
+  collabPartnerIndex = null;
+
+  document.getElementById('modal-collab').classList.add('hidden');
+  render();
+});
+
+document.getElementById('btn-cancel-collab').addEventListener('click', () => {
+  collabYourIndex = collabPartnerIndex = null;
+  document.getElementById('modal-collab').classList.add('hidden');
+});
+
+document.getElementById('modal-collab').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) {
+    collabYourIndex = collabPartnerIndex = null;
+    e.currentTarget.classList.add('hidden');
+  }
+});
+
+// ============================================================
+// Shuffle rack
+// ============================================================
+
+document.getElementById('btn-shuffle').addEventListener('click', () => {
+  if (pendingPlacements.length > 0) return; // don't shuffle mid-placement
+  const hand = state.hands[state.turn];
+  for (let i = hand.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [hand[i], hand[j]] = [hand[j], hand[i]];
+  }
+  selectedRackIndex = null;
+  renderRacks();
 });
 
 // ============================================================
@@ -731,6 +910,10 @@ function init() {
   if (location.hash.length > 1) {
     try {
       state = decodeState(location.hash.slice(1));
+      if (state.lastMove && state.lastMove.words.length > 0) {
+        flashLastMove = true;
+        showLastMoveBanner(state.lastMove);
+      }
     } catch (e) {
       console.warn('Failed to decode state from URL, starting fresh.', e);
       state = createInitialState();
@@ -741,7 +924,6 @@ function init() {
     }
   } else {
     state = createInitialState();
-    // Show share modal immediately so P1 can send the link before anyone moves.
     showShareModal({
       title: 'Game ready — share with your partner',
       hint: "Send this link to your partner. Whoever's turn it is goes first.",
@@ -749,6 +931,14 @@ function init() {
   }
 
   render();
+}
+
+function showLastMoveBanner(lastMove) {
+  const banner = document.getElementById('last-move-banner');
+  const partnerLabel = state.turn === 'P1' ? 'Player 2' : 'Player 1';
+  banner.innerHTML = `${partnerLabel} played <strong>${lastMove.words.join(', ')}</strong> for <strong>${lastMove.points} points</strong>!`;
+  banner.classList.remove('hidden');
+  setTimeout(() => banner.classList.add('hidden'), 5000);
 }
 
 init();

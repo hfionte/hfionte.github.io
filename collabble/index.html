@@ -24,7 +24,10 @@
     </div>
 
     <section class="rack-section">
-      <div class="rack-label">Your Tiles</div>
+      <div class="rack-label">
+        <span>Your Tiles</span>
+        <button id="btn-shuffle" class="icon-btn" aria-label="Shuffle tiles">🔀</button>
+      </div>
       <div id="your-rack" class="rack"></div>
     </section>
 
@@ -36,9 +39,14 @@
       <div id="partner-rack" class="rack"></div>
     </section>
 
+    <div id="point-preview" class="point-preview hidden"></div>
+
+    <div id="last-move-banner" class="last-move-banner hidden"></div>
+
     <div id="actions">
       <button id="btn-end-turn"  class="btn btn-primary"   disabled>End Turn</button>
       <button id="btn-copy-url"  class="btn btn-secondary">Copy URL</button>
+      <button id="btn-collab"    class="btn btn-collab">Collab</button>
       <button id="btn-exchange"  class="btn btn-ghost">Exchange</button>
       <button id="btn-pass"      class="btn btn-ghost">Pass</button>
     </div>
@@ -50,6 +58,22 @@
     <div class="modal-box">
       <h2>Choose a letter for the blank tile</h2>
       <div id="letter-grid"></div>
+    </div>
+  </div>
+
+  <!-- Modal: collab tile swap -->
+  <div id="modal-collab" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <h2>Collab Trade</h2>
+      <p class="modal-hint">Select one of your tiles and one of your partner's tiles to swap. You each get one Collab per game.</p>
+      <div class="collab-rack-label">Your tile</div>
+      <div id="collab-your-rack" class="rack"></div>
+      <div class="collab-rack-label" style="margin-top:12px">Partner's tile</div>
+      <div id="collab-partner-rack" class="rack"></div>
+      <div class="modal-actions">
+        <button id="btn-confirm-collab" class="btn btn-collab" disabled>Swap</button>
+        <button id="btn-cancel-collab"  class="btn btn-ghost">Cancel</button>
+      </div>
     </div>
   </div>
 
