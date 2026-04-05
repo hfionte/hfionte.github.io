@@ -1,0 +1,424 @@
+/* ===== Reset ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ===== Design tokens ===== */
+:root {
+  --bg:           #f5f0e8;
+  --text:         #2c2c2c;
+  --text-muted:   #777;
+
+  --header-bg:    #3d2b1f;
+  --header-text:  #f5f0e8;
+
+  /* Board */
+  --cell-empty:   #d4c5a9;
+  --grid-line:    #b09878;
+
+  /* Premium square colors */
+  --tw-bg:  #c1392b;  --tw-text:  #fff;
+  --dw-bg:  #e8855a;  --dw-text:  #fff;
+  --tl-bg:  #2471a3;  --tl-text:  #fff;
+  --dl-bg:  #85c1e9;  --dl-text:  #2c2c2c;
+
+  /* Tiles */
+  --tile-face:     #fce8b2;
+  --tile-border:   #a07c50;
+  --tile-shadow:   rgba(0,0,0,0.18);
+  --tile-selected: #f4c842;
+  --tile-sel-border: #8b6320;
+
+  /* Sizing — scales with viewport width on mobile, caps on desktop */
+  --cell-size: min(calc((100vw - 2px) / 15), 44px);
+  --tile-size: min(calc((100vw - 40px) / 8), 54px);
+}
+
+/* ===== Base ===== */
+html, body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ===== Header ===== */
+#header {
+  background: var(--header-bg);
+  color: var(--header-text);
+  padding: 8px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+#game-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+
+#score-display {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+#turn-display {
+  font-size: 0.72rem;
+  opacity: 0.8;
+}
+
+.btn-new-game {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: var(--header-text);
+  border-radius: 5px;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-new-game:active { background: rgba(255,255,255,0.15); }
+
+/* ===== Board ===== */
+#board-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0; /* prevent whitespace gap under inline elements */
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(15, var(--cell-size));
+  grid-template-rows:    repeat(15, var(--cell-size));
+  border: 1px solid var(--grid-line);
+}
+
+/* ===== Board cells ===== */
+.cell {
+  width:  var(--cell-size);
+  height: var(--cell-size);
+  border: 0.5px solid var(--grid-line);
+  background: var(--cell-empty);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cell[data-premium="TW"] { background: var(--tw-bg); }
+.cell[data-premium="DW"] { background: var(--dw-bg); }
+.cell[data-premium="TL"] { background: var(--tl-bg); }
+.cell[data-premium="DL"] { background: var(--dl-bg); }
+.cell[data-premium="★"]  { background: var(--tw-bg); }
+
+/* Premium square label */
+.cell-label {
+  font-size: calc(var(--cell-size) * 0.22);
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cell[data-premium="TW"] .cell-label,
+.cell[data-premium="DW"] .cell-label,
+.cell[data-premium="TL"] .cell-label { color: #fff; }
+
+.cell[data-premium="DL"] .cell-label { color: var(--text); }
+.cell[data-premium="★"]  .cell-label { color: #fff; font-size: calc(var(--cell-size) * 0.55); }
+
+/* Valid-drop highlight when a tile is selected */
+.cell.drop-target {
+  outline: 2px solid var(--tile-selected);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+/* ===== Tiles on the board ===== */
+.cell-tile {
+  position: absolute;
+  inset: 1px;
+  background: var(--tile-face);
+  border: 1px solid var(--tile-border);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--cell-size) * 0.52);
+  font-weight: 700;
+  color: var(--text);
+  pointer-events: none; /* cell itself handles clicks */
+  user-select: none;
+  line-height: 1;
+}
+
+.cell-tile .tile-points {
+  position: absolute;
+  bottom: 1px;
+  right: 2px;
+  font-size: calc(var(--cell-size) * 0.2);
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* Tiles placed this turn (not yet committed) */
+.cell-tile.just-placed {
+  background: var(--tile-selected);
+  border-color: var(--tile-sel-border);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Tiles from the previous play */
+.cell-tile.last-move {
+  box-shadow: 0 0 0 1.5px #c08820 inset;
+}
+
+/* ===== Rack sections ===== */
+.rack-section {
+  padding: 8px 12px 2px;
+  flex-shrink: 0;
+}
+
+.rack-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rack {
+  display: flex;
+  gap: 4px;
+  min-height: var(--tile-size);
+}
+
+/* ===== Rack tiles ===== */
+.tile {
+  width:  var(--tile-size);
+  height: var(--tile-size);
+  flex-shrink: 0;
+  background: var(--tile-face);
+  border: 1.5px solid var(--tile-border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--tile-size) * 0.5);
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  box-shadow: 0 2px 3px var(--tile-shadow);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.08s;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1;
+}
+
+.tile .tile-points {
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  font-size: calc(var(--tile-size) * 0.22);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.tile.selected {
+  background: var(--tile-selected);
+  border-color: var(--tile-sel-border);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px var(--tile-shadow);
+}
+
+/* Tile placeholder — keeps layout stable when tile is on the board */
+.tile-placeholder {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Blind / face-down */
+.tile.blind {
+  background: var(--tile-border);
+  color: transparent;
+  cursor: default;
+}
+.tile.blind .tile-points { display: none; }
+
+/* Blank tile (the wild) */
+.tile.is-blank { color: var(--text-muted); }
+
+/* Exchange mode: tile marked for swap */
+.tile.marked-for-exchange {
+  background: #d9534f;
+  border-color: #a02020;
+  color: #fff;
+}
+.tile.marked-for-exchange .tile-points { color: rgba(255,255,255,0.7); }
+
+/* ===== Action buttons ===== */
+#actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 10px 12px 20px;
+}
+
+.btn {
+  padding: 11px 8px;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.1s, opacity 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.btn-primary   { background: var(--header-bg); color: var(--header-text); }
+.btn-primary:not(:disabled):active { background: #2a1e16; }
+
+.btn-secondary { background: #2471a3; color: #fff; }
+.btn-secondary:not(:disabled):active { background: #1a5276; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid #bbb;
+}
+.btn-ghost:not(:disabled):active { background: #e8e2d8; }
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 2px;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== Modals ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-box {
+  background: var(--bg);
+  border-radius: 18px 18px 0 0;
+  padding: 22px 16px 36px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.modal-box h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.modal-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.modal-actions .btn { flex: 1; }
+
+/* Blank tile letter picker */
+#letter-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.letter-choice {
+  aspect-ratio: 1;
+  background: var(--tile-face);
+  border: 1.5px solid var(--tile-border);
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.letter-choice:active { background: var(--tile-selected); }
+
+/* Share URL box */
+#share-url-display {
+  background: #ede8df;
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-size: 0.68rem;
+  font-family: monospace;
+  word-break: break-all;
+  color: #555;
+  max-height: 72px;
+  overflow-y: auto;
+  margin-top: 6px;
+}
+
+/* ===== Utility ===== */
+.hidden { display: none !important; }
+
+/* ===== Larger screens ===== */
+@media (min-width: 640px) {
+  :root {
+    --cell-size: 40px;
+    --tile-size: 50px;
+  }
+
+  #board-container { padding: 10px 0; }
+
+  #actions { grid-template-columns: repeat(4, 1fr); }
+
+  .modal { align-items: center; }
+  .modal-box { border-radius: 14px; }
+}

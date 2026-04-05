@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Collabble</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header id="header">
+    <div id="title">✦ Collabble</div>
+    <div id="game-info">
+      <span id="score-display">Score: 0</span>
+      <span id="turn-display">Player 1's turn</span>
+    </div>
+    <button id="btn-new-game" class="btn-new-game">New Game</button>
+  </header>
+
+  <main id="app">
+
+    <div id="board-container">
+      <div id="board"></div>
+    </div>
+
+    <section class="rack-section">
+      <div class="rack-label">Your Tiles</div>
+      <div id="your-rack" class="rack"></div>
+    </section>
+
+    <section class="rack-section">
+      <div class="rack-label">
+        <span>Partner's Tiles</span>
+        <button id="blind-toggle" class="icon-btn" aria-label="Toggle blind mode">👁</button>
+      </div>
+      <div id="partner-rack" class="rack"></div>
+    </section>
+
+    <div id="actions">
+      <button id="btn-end-turn"  class="btn btn-primary"   disabled>End Turn</button>
+      <button id="btn-copy-url"  class="btn btn-secondary">Copy URL</button>
+      <button id="btn-exchange"  class="btn btn-ghost">Exchange</button>
+      <button id="btn-pass"      class="btn btn-ghost">Pass</button>
+    </div>
+
+  </main>
+
+  <!-- Modal: blank tile letter chooser -->
+  <div id="modal-blank" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <h2>Choose a letter for the blank tile</h2>
+      <div id="letter-grid"></div>
+    </div>
+  </div>
+
+  <!-- Modal: exchange tiles -->
+  <div id="modal-exchange" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <h2>Select tiles to exchange</h2>
+      <p class="modal-hint">Tap tiles to select, then confirm. Your turn is forfeited.</p>
+      <div id="exchange-rack" class="rack"></div>
+      <div class="modal-actions">
+        <button id="btn-confirm-exchange" class="btn btn-primary">Exchange</button>
+        <button id="btn-cancel-exchange"  class="btn btn-ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: share URL after ending turn -->
+  <div id="modal-share" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <h2 id="share-modal-title">Send to your partner</h2>
+      <p id="share-modal-hint" class="modal-hint">Copy this link and send it to your partner to continue the game.</p>
+      <div id="share-url-display"></div>
+      <div class="modal-actions">
+        <button id="btn-copy-share" class="btn btn-primary">Copy Link</button>
+        <button id="btn-close-share" class="btn btn-ghost">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+  <script src="wordlist.js"></script>
+  <script src="state.js"></script>
+  <script src="game.js"></script>
+
+</body>
+</html>
