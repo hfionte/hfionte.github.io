@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The NextStep Youth Economic Opportunity Grant</title>
+    <style>
+      :root {
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        --text: #111827;
+        --muted: #6b7280;
+        --border: #d1d5db;
+        --accent: #2563eb;
+      }
+      body {
+        font-family: system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 32px 16px;
+        line-height: 1.5;
+      }
+      form {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      header {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-top: 6px solid var(--accent);
+        border-radius: 6px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+      }
+      header h1 {
+        font-size: 24px;
+        margin: 0 0 4px;
+      }
+      header h2 {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+      header p {
+        font-size: 14px;
+        margin: 0 0 12px;
+      }
+      header p:last-child {
+        margin-bottom: 0;
+      }
+      .field {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 16px 20px 18px;
+        margin: 0 0 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      label {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      input,
+      textarea {
+        font: inherit;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: white;
+      }
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      button {
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="#" method="post" novalidate>
+      <header>
+        <h1>The NextStep Youth Economic Opportunity Grant</h1>
+        <h2>
+          NextStep Youth Economic Opportunity Grant — 2026 Cycle · Calloway
+          Brothers Family Foundation
+        </h2>
+        <p>
+          The Calloway Brothers Family Foundation was established in 2003 by
+          two first-generation college graduates who grew up in working-class
+          Massachusetts communities. Guided by the belief that economic
+          mobility begins with access to real opportunity, the Foundation
+          invests in programs that connect young people — particularly those
+          from low-income backgrounds — to meaningful work experience, skills
+          training, and pathways to financial independence.
+        </p>
+        <p>
+          The NextStep Youth Economic Opportunity Grant supports nonprofits
+          delivering workforce readiness, vocational training, paid internship,
+          or career mentorship programs to youth ages 14–24 in underserved
+          communities across Massachusetts. We are especially interested in
+          programs that offer stipends or wages directly to participants,
+          integrate real-world work experience, and demonstrate strong outcomes
+          in employment or post-secondary enrollment.
+        </p>
+        <p>
+          Grants of up to $25,000 are available for one-year program support.
+          We do not fund general operating costs, capital projects, or
+          endowments.
+        </p>
+        <p>
+          <strong>Eligibility:</strong> 501(c)(3) organizations operating in
+          Massachusetts with annual budgets under $3 million. Organizations
+          must have been in operation for at least two years and must serve
+          youth ages 14–24 as a primary population.
+        </p>
+        <p>
+          <strong>Application deadline:</strong> September 15, 2026. Late
+          submissions will not be reviewed. Questions? Contact
+          <a href="mailto:info@callowaybrothers.org"
+            >info@callowaybrothers.org</a
+          >.
+        </p>
+      </header>
+
+      <div class="field">
+        <label for="org-description">
+          Describe your organization, including its history, mission, and
+          programs serving youth.
+        </label>
+        <textarea
+          id="org-description"
+          name="organization_description"
+          rows="6"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="org-tenure-and-budget">
+          How many years has your organization been in operation, and what is
+          your current annual operating budget (in USD)?
+        </label>
+        <input
+          id="org-tenure-and-budget"
+          name="years_operating_and_annual_budget"
+          type="text"
+          placeholder="e.g. 7 years; $1.2M"
+        />
+      </div>
+
+      <div class="field">
+        <label for="community-partnerships">
+          Describe your organization's active partnerships with employers,
+          schools, or community organizations that support youth career
+          pathways.
+        </label>
+        <textarea
+          id="community-partnerships"
+          name="community_partnerships"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="requested-amount">Requested amount (in USD)</label>
+        <input
+          id="requested-amount"
+          name="requested_amount_usd"
+          type="number"
+          min="0"
+          max="25000"
+          step="1"
+          placeholder="25000"
+        />
+      </div>
+
+      <div class="field">
+        <label for="program-dates">Program start and end date</label>
+        <input
+          id="program-dates"
+          name="program_start_and_end_date"
+          type="text"
+          placeholder="MM/DD/YYYY – MM/DD/YYYY"
+        />
+      </div>
+
+      <div class="field">
+        <label for="program-overview">
+          Provide a brief overview of the program(s) that will be supported by
+          the funds.
+        </label>
+        <textarea
+          id="program-overview"
+          name="program_overview"
+          rows="5"
+        ></textarea>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="participants-count">
+            Number of youth participants to be served
+          </label>
+          <input
+            id="participants-count"
+            name="participants_count"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="e.g. 40"
+          />
+        </div>
+
+        <div class="field">
+          <label for="participants-age-range">
+            Age range of participants (within 14–24)
+          </label>
+          <input
+            id="participants-age-range"
+            name="participants_age_range"
+            type="text"
+            placeholder="e.g. 16–19"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="program-location">
+          Geographic area served — Massachusetts cities or regions
+        </label>
+        <input
+          id="program-location"
+          name="program_location"
+          type="text"
+          placeholder="e.g. Lynn and the North Shore"
+        />
+      </div>
+
+      <div class="field">
+        <label for="work-experience-model">
+          Describe the work experience model used in the program (workforce
+          readiness, vocational training, paid internships, career mentorship,
+          or a combination).
+        </label>
+        <textarea
+          id="work-experience-model"
+          name="work_experience_model"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="participant-compensation">
+          Do participants receive stipends or wages? If so, describe the
+          structure and per-participant amount.
+        </label>
+        <textarea
+          id="participant-compensation"
+          name="participant_compensation"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="outcomes-and-evaluation">
+          What employment and post-secondary outcomes does the program aim to
+          achieve, and how will you measure success?
+        </label>
+        <textarea
+          id="outcomes-and-evaluation"
+          name="outcomes_and_evaluation"
+          rows="5"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="employer-partners">
+          Which employers and community organizations will partner with you to
+          deliver this program?
+        </label>
+        <textarea
+          id="employer-partners"
+          name="employer_partners"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="sustainability-plan">
+          What is your organization's plan for sustaining the program beyond
+          the grant period?
+        </label>
+        <textarea
+          id="sustainability-plan"
+          name="sustainability_plan"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="implementation-timeline">
+          Provide a timeline for implementing the proposed program.
+        </label>
+        <textarea
+          id="implementation-timeline"
+          name="implementation_timeline"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <button type="submit">Submit application</button>
+    </form>
+  </body>
+</html>
