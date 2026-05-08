@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Harvest Hope Community Impact Grant</title>
+    <style>
+      :root {
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        --text: #111827;
+        --muted: #6b7280;
+        --border: #d1d5db;
+        --accent: #2563eb;
+      }
+      body {
+        font-family: system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 32px 16px;
+        line-height: 1.5;
+      }
+      form {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      header {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-top: 6px solid var(--accent);
+        border-radius: 6px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+      }
+      header h1 {
+        font-size: 24px;
+        margin: 0 0 4px;
+      }
+      header h2 {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+      header p {
+        font-size: 14px;
+        margin: 0 0 12px;
+      }
+      header p:last-child {
+        margin-bottom: 0;
+      }
+      .field {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 16px 20px 18px;
+        margin: 0 0 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      label {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      input,
+      textarea {
+        font: inherit;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: white;
+      }
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      button {
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="#" method="post" novalidate>
+      <header>
+        <h1>Harvest Hope Community Impact Grant</h1>
+        <h2>
+          Harvest Hope Community Impact Grant — 2026 Cycle · Hartwell Family
+          Foundation
+        </h2>
+        <p>
+          The Hartwell Family Foundation is committed to strengthening the
+          fabric of New England communities by investing in nonprofits that
+          address root causes of poverty, hunger, and inequity. The Harvest Hope
+          Community Impact Grant supports organizations delivering direct
+          services to vulnerable populations — with a focus on food access,
+          community health, and youth empowerment.
+        </p>
+        <p>
+          We prioritize organizations that are deeply embedded in their
+          communities, demonstrate strong fiscal stewardship, and can show
+          measurable outcomes. Grants of up to $50,000 are available for
+          one-year program support or capacity-building initiatives.
+        </p>
+        <p>
+          <strong>Eligibility:</strong> 501(c)(3) organizations operating in
+          Massachusetts or Rhode Island with annual budgets under $5 million.
+          Organizations must have been in operation for at least three years.
+        </p>
+        <p>
+          Please complete all fields below. Applications are reviewed on a
+          rolling basis. Questions? Contact
+          <a href="mailto:grants@hartwellfamilyfoundation.org"
+            >grants@hartwellfamilyfoundation.org</a
+          >.
+        </p>
+      </header>
+
+      <div class="field">
+        <label for="org-description">
+          Describe your organization, including its history, programs, and
+          accomplishments.
+        </label>
+        <textarea
+          id="org-description"
+          name="organization_description"
+          rows="6"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="community-collaborations">
+          Describe your organization's active collaborations and partnerships
+          within the community with other organizations.
+        </label>
+        <textarea
+          id="community-collaborations"
+          name="community_collaborations"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="requested-amount">Requested amount (in USD)</label>
+        <input
+          id="requested-amount"
+          name="requested_amount_usd"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="50000"
+        />
+      </div>
+
+      <div class="field">
+        <label for="program-dates">Program start and end date</label>
+        <input
+          id="program-dates"
+          name="program_start_and_end_date"
+          type="text"
+          placeholder="MM/DD/YYYY – MM/DD/YYYY"
+        />
+      </div>
+
+      <div class="field">
+        <label for="program-overview">
+          Provide a brief overview of the program(s) that will be supported by
+          the funds.
+        </label>
+        <textarea
+          id="program-overview"
+          name="program_overview"
+          rows="5"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="population-location">
+          Population to be served by program — Location
+        </label>
+        <input
+          id="population-location"
+          name="population_location"
+          type="text"
+          placeholder="Geographic area served"
+        />
+      </div>
+
+      <div class="field">
+        <label for="population-subject">
+          Population to be served — Subject
+        </label>
+        <input
+          id="population-subject"
+          name="population_subject"
+          type="text"
+          placeholder="Cause area or focus subject"
+        />
+      </div>
+
+      <div class="field">
+        <label for="population-served">
+          Population to be served — Population Served
+        </label>
+        <input
+          id="population-served"
+          name="population_served"
+          type="text"
+          placeholder="e.g. low-income youth, food-insecure families"
+        />
+      </div>
+
+      <div class="field">
+        <label for="evaluation-plan">
+          How will you evaluate the success and outcomes of the program?
+        </label>
+        <textarea
+          id="evaluation-plan"
+          name="evaluation_plan"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="sustainability-plan">
+          What is your organization's plan for sustaining the program beyond the
+          grant period?
+        </label>
+        <textarea
+          id="sustainability-plan"
+          name="sustainability_plan"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="partner-organizations">
+          Which organizations do you intend to partner with, if any, and how
+          will these partnerships enhance the program's success?
+        </label>
+        <textarea
+          id="partner-organizations"
+          name="partner_organizations"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="implementation-timeline">
+          Provide a timeline for implementing the proposed project or program.
+        </label>
+        <textarea
+          id="implementation-timeline"
+          name="implementation_timeline"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <button type="submit">Submit application</button>
+    </form>
+  </body>
+</html>
